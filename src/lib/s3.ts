@@ -1,7 +1,13 @@
 import AWS from "aws-sdk";
-
+require("aws-sdk/lib/maintenance_mode_message").suppress = true;
 export async function uploadToS3(file: File) {
   try {
+    console.log("inside s3 upload func");
+    console.log(
+      process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID,
+      process.env.NEXT_PUBLIC_S3_SECRET_ACCESS_KEY,
+      process.env.NEXT_PUBLIC_S3_BUCKET_NAME
+    );
     AWS.config.update({
       accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID,
       secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_ACCESS_KEY,
@@ -34,6 +40,7 @@ export async function uploadToS3(file: File) {
 
     await upload.then((data) => {
       console.log("successfully uploaded to S3!", file_key);
+      console.log(data);
     });
 
     return Promise.resolve({
